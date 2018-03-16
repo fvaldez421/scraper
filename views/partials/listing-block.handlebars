@@ -1,0 +1,8 @@
+  <li id={{this.id}}>
+    <p data-id={{this.id}} id="title" state={{this.readLater}}>{{this.title}}</p>
+
+      <button data-id="{{this.id}}" state={{this.readLater}} id="changeState">
+      {{#if this.readLater}}Delete{{else}}Save for later{{/if}}</button>
+
+      <a href={{this.link}}><button>Check it out</button></a>
+  </li>

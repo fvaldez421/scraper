@@ -1,19 +1,66 @@
-$.getJSON("/results", function(data) {
-  for (var i = 0; i < data.length; i++) {
-    $("#results").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
-  }
-});
 
+<div class="wrapper">
+<div id="results">
+<h1>Sf Chronicle Article Preview Thingy...</h1>
+<ul>
+  {{#each listing}}
+  {{#unless this.readLater}}
+    {{>listing-block }}
+  {{/unless}}
+  {{/each}}
+</ul>
+</div>
+
+<div id="comments"></div>
+</div>
+
+<div id="readLater">
+<h3>Read Later:</h3>
+<ul>
+  {{#each listing}}
+  {{#if this.readLater}}
+    {{>listing-block}}
+  {{/if}}
+  {{/each}}
+</ul>
+</div>
+
+<button id="scrape">Update</button>
+<script type="text/javascript">
+	
 $("#scrape").on("click", function(event) {
   $.get("/scrape", function(data) {});
-  console.log("scraped");
 });
+
+$("#changeState").on("click", function(event) {
+  var thisId = $(this).attr("data-id");
+  var state = $(this).attr("state");
+  var newState;
+  console.log(state);
+
+  if(!state) {
+    newState = false;
+  }else {
+    newState = true;
+  };
+  console.log(newState);
+  console.log("readLater: " + thisId);
+
+  $.ajax({
+    method: "POST",
+    url: "/readLater",
+    data: {
+      id: thisId,
+      state: newState
+    }
+  })
+})
 
 $(document).on("click", "p", function() {
   $("#comments").empty();
   var thisId = $(this).attr("data-id");
 
-$.get("/results/" + thisId, function(data) {
+    $.get("/results/" + thisId, function(data) {
       console.log(data.comment);
       $("#comments").append("<h2>" + data.title + "</h2>");
       $("#comments").append("<input id='titleinput' name='title' >");
@@ -47,3 +94,5 @@ $(document).on("click", "#saveComment", function() {
   $("#titleinput").val("");
   $("#bodyinput").val("");
 });
+
+</script>

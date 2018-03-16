@@ -11,6 +11,10 @@ var ListSchema = new Schema({
     type: String,
     required: true
   },
+  readLater: {
+    type: Boolean,
+    default: false
+  },
   comment: {
     type: Schema.Types.ObjectId,
     ref: "Comment"
